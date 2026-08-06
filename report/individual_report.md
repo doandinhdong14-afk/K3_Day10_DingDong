@@ -10,7 +10,7 @@
 | MSSV               | [2A202601607]                     |
 | Khóa/Lớp         | [K3]              |
 | Tên nhóm         | [DingDong]     |
-| Vai trò chính    | [Vai trò]                 |
+| Vai trò chính    | [AI dev]                 |
 | Repository         | [Đường dẫn repository] |
 | Ngày hoàn thành | [2026-8-6]               |
 
@@ -20,8 +20,9 @@
 
 | Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao  | Trạng thái                                 |
 | ------------------ | --------------------- | ---------------- | ----------------- | -------------------------------------------- |
-| [Phần việc]      | [File/hàm]           | [Input]          | [Output/artifact] | [Hoàn thành/Một phần/Chưa hoàn thành] |
-| [Phần việc]      | [File/hàm]           | [Input]          | [Output/artifact] | [Hoàn thành/Một phần/Chưa hoàn thành] |
+| [Khởi chạy LLM local]      | []           | [Input]          | [Output/artifact] | [Hoàn thành] |
+| [Tích hợp LLM local vào pipeline]      | [phase1.py]           | [Câu hỏi của người dùng]          | [Intent từ câu truy vấn] | [Một phần] |
+| [Khởi chạy LLM local]      | []           | [Input]          | [Output/artifact] | [Hoàn thành] |
 
 Chỉ nhận ownership cho phần bạn trực tiếp thực hiện. Liên hệ rõ phần việc của bạn với đầu vào, đầu ra và các thành viên phụ thuộc vào phần đó.
 
