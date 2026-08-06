@@ -6,13 +6,13 @@
 
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Họ và tên       | [Họ và tên]             |
-| MSSV               | [MSSV]                     |
-| Khóa/Lớp         | [K3 hoặc K4]              |
-| Tên nhóm         | [Tên hoặc mã nhóm]     |
+| Họ và tên       | [Dương Hải Long]             |
+| MSSV               | [2A202601607]                     |
+| Khóa/Lớp         | [K3]              |
+| Tên nhóm         | [DingDong]     |
 | Vai trò chính    | [Vai trò]                 |
 | Repository         | [Đường dẫn repository] |
-| Ngày hoàn thành | [YYYY-MM-DD]               |
+| Ngày hoàn thành | [2026-8-6]               |
 
 ## 2. Vai trò và phạm vi công việc
 
