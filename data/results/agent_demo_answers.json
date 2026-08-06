@@ -1,0 +1,38 @@
+[
+  {
+    "question": "What is the main contribution of the paper titled 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation'?",
+    "answer": [
+      {
+        "type": "text",
+        "text": "Based on the paper, the main contributions of **SafeRAG** (a large-language-model-based multistage retrieval-augmented framework for oil and gas safety report generation) are as follows:\n\n1. **Addressing Domain and Regulatory Gaps in LLMs:** It tackles the limitations of standard large language models (LLMs)\u2014which often lack domain-specific understanding and regulatory alignment when analyzing high-risk industrial accidents\u2014by combining internal and external knowledge.\n2. **Entity-Centric Internal Knowledge Generation:** The framework utilizes an entity-centric approach that prompts LLMs to internally generate relevant domain-specific knowledge about the accident.\n3. **Hierarchical External Knowledge Retrieval:** It performs a hierarchical retrieval of external safety regulations aligned with the specific accident across three levels: topic, concept, and context.\n4. **Domain-Expert Persona & Structured Prompt Engineering:** It assigns a domain-expert persona and leverages prompt engineering to integrate internal and external knowledge, enabling the LLM to analyze accidents from an expert perspective and produce well-structured safety reports.\n5. **Real-World Dataset and Validation:** The authors constructed a large dataset comprising 10,818 accident-description/report pairs from real-world industry reports, demonstrating through experiments (using metrics like BERTScore and BARTScore) that SafeRAG substantially outperforms baseline LLMs.",
+        "extras": {
+          "signature": "EjQKMgERTTIPSRjRN03XChH5du+LMr3JUoIqM1lgAOElqn5r19jgyrneCHNdJ5TMP+MrsdUE"
+        }
+      }
+    ]
+  },
+  {
+    "question": "Who authored the paper titled 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation'?",
+    "answer": [
+      {
+        "type": "text",
+        "text": "The paper titled \"SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation\" was authored by:\n\n* Qianwen Cao\n* Chiyu Zhang\n* Junxiong Ning\n* Gongru Li",
+        "extras": {
+          "signature": "EjQKMgERTTIPdjz7FACvvJp1YK4AvgMRbE82cScCJXPwygmJZ0ow6GqpDiYZt+BulwPhTbTG"
+        }
+      }
+    ]
+  },
+  {
+    "question": "When was the paper titled 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation' published?",
+    "answer": [
+      {
+        "type": "text",
+        "text": "The paper titled \"SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation\" was published on **August 1, 2026**.",
+        "extras": {
+          "signature": "EjQKMgERTTIP33jtM0g2dkKeK3+R4r1aPTaAdZg3w3wA/ahUpCg/JyQjkX1/zLSe99JY5Xsy"
+        }
+      }
+    ]
+  }
+]

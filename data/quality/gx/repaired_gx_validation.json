@@ -1,0 +1,310 @@
+{
+  "success": true,
+  "results": [
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_table_row_count_to_be_between",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "min_value": 5
+        },
+        "meta": {},
+        "id": "5e0befbc-2386-4054-82f0-43475fd6850a",
+        "severity": "critical"
+      },
+      "result": {
+        "observed_value": 24
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "column": "paper_id"
+        },
+        "meta": {},
+        "id": "7f9092ce-b4c0-4dd0-a5e2-ec678c21cb13",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_be_unique",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "column": "paper_id"
+        },
+        "meta": {},
+        "id": "e7b00e5e-0af1-4af1-99f4-f2faa08fcdb6",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "column": "title"
+        },
+        "meta": {},
+        "id": "1584e3b2-9d66-488f-b516-d3f20be87416",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "column": "title",
+          "min_value": 8
+        },
+        "meta": {},
+        "id": "8adc7572-e894-4c2a-a57d-6f60a208270b",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "column": "summary",
+          "min_value": 40
+        },
+        "meta": {},
+        "id": "c972b6ab-7bc1-4c61-bc41-ec6a129c6660",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_match_regex",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "column": "published",
+          "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "meta": {},
+        "id": "09556e9a-989c-4443-bd2f-b48941f1f291",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "column": "text_for_embedding",
+          "min_value": 80
+        },
+        "meta": {},
+        "id": "6187a493-6cfd-4f34-a26a-5c36f217ea61",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_be_between",
+        "kwargs": {
+          "batch_id": "repaired_pandas-repaired_asset",
+          "column": "age_days",
+          "min_value": 0.0,
+          "max_value": 180.0
+        },
+        "meta": {},
+        "id": "56cf483a-f634-4344-a998-fbb676f18ffe",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    }
+  ],
+  "suite_name": "repaired_suite",
+  "suite_parameters": {},
+  "statistics": {
+    "evaluated_expectations": 9,
+    "successful_expectations": 9,
+    "unsuccessful_expectations": 0,
+    "success_percent": 100.0
+  },
+  "meta": {
+    "great_expectations_version": "1.19.1",
+    "batch_spec": {
+      "batch_data": "PandasDataFrame"
+    },
+    "batch_markers": {
+      "ge_load_time": "20260806T092903.840128Z",
+      "pandas_data_fingerprint": "5ba91b0691409f8f0c52625ad16f8ab3"
+    },
+    "active_batch_definition": {
+      "datasource_name": "repaired_pandas",
+      "data_connector_name": "fluent",
+      "data_asset_name": "repaired_asset",
+      "batch_identifiers": {
+        "dataframe": "<DATAFRAME>"
+      }
+    },
+    "validation_id": "96ecb9ff-c532-4e05-a315-9486fe8cde36",
+    "checkpoint_id": null,
+    "run_id": {
+      "run_name": null,
+      "run_time": "2026-08-06T16:29:04.009496+07:00"
+    },
+    "validation_time": "2026-08-06T09:29:04.009496+00:00",
+    "batch_parameters": {
+      "dataframe": "<DATAFRAME>"
+    }
+  },
+  "id": null
+}

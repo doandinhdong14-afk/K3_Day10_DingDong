@@ -1,0 +1,359 @@
+{
+  "success": false,
+  "results": [
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_table_row_count_to_be_between",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "min_value": 5
+        },
+        "meta": {},
+        "id": "313c60a1-5f83-4311-baf3-e493b6162f89",
+        "severity": "critical"
+      },
+      "result": {
+        "observed_value": 23
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "column": "paper_id"
+        },
+        "meta": {},
+        "id": "5654c171-ba9c-4539-a3f4-a33a25017e23",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 23,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": false,
+      "expectation_config": {
+        "type": "expect_column_values_to_be_unique",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "column": "paper_id"
+        },
+        "meta": {},
+        "id": "212ed7f1-60a8-4e5e-abcb-17b90d2ede7d",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 23,
+        "unexpected_count": 4,
+        "unexpected_percent": 17.391304347826086,
+        "partial_unexpected_list": [
+          "10.2196/preprints.106157",
+          "10.3390/buildings16132637",
+          "10.2196/preprints.106157",
+          "10.3390/buildings16132637"
+        ],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 17.391304347826086,
+        "unexpected_percent_nonmissing": 17.391304347826086,
+        "partial_unexpected_counts": [
+          {
+            "value": "10.2196/preprints.106157",
+            "count": 2
+          },
+          {
+            "value": "10.3390/buildings16132637",
+            "count": 2
+          }
+        ],
+        "partial_unexpected_index_list": [
+          0,
+          1,
+          21,
+          22
+        ]
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_not_be_null",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "column": "title"
+        },
+        "meta": {},
+        "id": "f2188faa-0cfd-4d30-a1f1-445ecce90b93",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 23,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "column": "title",
+          "min_value": 8
+        },
+        "meta": {},
+        "id": "5cc10e3a-3f53-48a5-a7d2-7f8c2b4d3ea0",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 23,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": false,
+      "expectation_config": {
+        "type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "column": "summary",
+          "min_value": 40
+        },
+        "meta": {},
+        "id": "0cfe14b3-d862-4ad1-a1ef-1e1041250e3d",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 23,
+        "unexpected_count": 5,
+        "unexpected_percent": 21.73913043478261,
+        "partial_unexpected_list": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 21.73913043478261,
+        "unexpected_percent_nonmissing": 21.73913043478261,
+        "partial_unexpected_counts": [
+          {
+            "value": "",
+            "count": 5
+          }
+        ],
+        "partial_unexpected_index_list": [
+          0,
+          1,
+          2,
+          21,
+          22
+        ]
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_values_to_match_regex",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "column": "published",
+          "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "meta": {},
+        "id": "7e1dce16-827d-488a-b937-cc3bf0e1d76b",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 23,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": true,
+      "expectation_config": {
+        "type": "expect_column_value_lengths_to_be_between",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "column": "text_for_embedding",
+          "min_value": 80
+        },
+        "meta": {},
+        "id": "0bf22155-223b-4039-a63a-3237f671cfbd",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 23,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0,
+        "partial_unexpected_list": [],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 0.0,
+        "unexpected_percent_nonmissing": 0.0,
+        "partial_unexpected_counts": [],
+        "partial_unexpected_index_list": []
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    },
+    {
+      "success": false,
+      "expectation_config": {
+        "type": "expect_column_values_to_be_between",
+        "kwargs": {
+          "batch_id": "corrupted_pandas-corrupted_asset",
+          "column": "age_days",
+          "min_value": 0.0,
+          "max_value": 180.0
+        },
+        "meta": {},
+        "id": "13c0d645-a9b2-498b-bf46-49ed06ddd8b7",
+        "severity": "critical"
+      },
+      "result": {
+        "element_count": 23,
+        "unexpected_count": 3,
+        "unexpected_percent": 13.043478260869565,
+        "partial_unexpected_list": [
+          1526,
+          1526,
+          1526
+        ],
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "unexpected_percent_total": 13.043478260869565,
+        "unexpected_percent_nonmissing": 13.043478260869565,
+        "partial_unexpected_counts": [
+          {
+            "value": 1526,
+            "count": 3
+          }
+        ],
+        "partial_unexpected_index_list": [
+          8,
+          9,
+          10
+        ]
+      },
+      "meta": {},
+      "exception_info": {
+        "raised_exception": false,
+        "exception_traceback": null,
+        "exception_message": null
+      }
+    }
+  ],
+  "suite_name": "corrupted_suite",
+  "suite_parameters": {},
+  "statistics": {
+    "evaluated_expectations": 9,
+    "successful_expectations": 6,
+    "unsuccessful_expectations": 3,
+    "success_percent": 66.66666666666666
+  },
+  "meta": {
+    "great_expectations_version": "1.19.1",
+    "batch_spec": {
+      "batch_data": "PandasDataFrame"
+    },
+    "batch_markers": {
+      "ge_load_time": "20260806T092756.505409Z",
+      "pandas_data_fingerprint": "4360c50c0f96622df47da047ac4d6ce5"
+    },
+    "active_batch_definition": {
+      "datasource_name": "corrupted_pandas",
+      "data_connector_name": "fluent",
+      "data_asset_name": "corrupted_asset",
+      "batch_identifiers": {
+        "dataframe": "<DATAFRAME>"
+      }
+    },
+    "validation_id": "d1637cca-77be-4962-821b-84e030a782b8",
+    "checkpoint_id": null,
+    "run_id": {
+      "run_name": null,
+      "run_time": "2026-08-06T16:27:56.678247+07:00"
+    },
+    "validation_time": "2026-08-06T09:27:56.678247+00:00",
+    "batch_parameters": {
+      "dataframe": "<DATAFRAME>"
+    }
+  },
+  "id": null
+}

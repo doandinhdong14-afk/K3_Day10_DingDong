@@ -1,0 +1,8 @@
+# Ràng buộc cho macOS Intel (x86_64) + Python 3.11.
+# cryptography >= 49 chỉ phát hành wheel macOS arm64 -> buộc build từ source (cần Rust + OpenSSL).
+cryptography<49
+# torch chỉ có wheel macOS x86_64 tới 2.2.2; bản này compile với NumPy 1.x.
+torch==2.2.2
+numpy<2
+# transformers 5.x yêu cầu torch >= 2.4 và sẽ tự tắt PyTorch backend.
+transformers<5

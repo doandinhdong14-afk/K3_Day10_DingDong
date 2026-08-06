@@ -3,7 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from statistics import mean
 import os
+import re
 import sys
+import time
 import types
 from typing import Any
 
@@ -45,7 +47,43 @@ def _token_f1(reference: str, prediction: str) -> float:
     return 2 * precision * recall / (precision + recall)
 
 
+JUDGE_MAX_ATTEMPTS = 5
+JUDGE_BACKOFF_SECONDS = 10.0
+JUDGE_MAX_BACKOFF_SECONDS = 90.0
+
+# Provider rate-limit thuong kem goi y thoi gian cho, vd "Please retry in 21.3s".
+_RETRY_HINT_PATTERN = re.compile(r"retry in ([0-9.]+)s", flags=re.IGNORECASE)
+
+
+def _is_rate_limit(error: Exception) -> bool:
+    message = str(error).lower()
+    return "429" in message or "resource_exhausted" in message or "rate limit" in message
+
+
+def _judge_retry_delay(error: Exception, attempt: int) -> float:
+    hint = _RETRY_HINT_PATTERN.search(str(error))
+    if hint:
+        return min(float(hint.group(1)) + 1.0, JUDGE_MAX_BACKOFF_SECONDS)
+    return min(JUDGE_BACKOFF_SECONDS * (2 ** (attempt - 1)), JUDGE_MAX_BACKOFF_SECONDS)
+
+
+def _heuristic_verdict(reference: str, prediction: str, reason: str) -> JudgeVerdict:
+    token_f1 = _token_f1(reference, prediction)
+    score = 5 if token_f1 >= 0.95 else 3 if token_f1 >= 0.5 else 1
+    return JudgeVerdict(score=score, correct=score >= 3, reasoning=reason)
+
+
 def _judge_answer(settings: Settings, question: str, reference: str, prediction: str) -> JudgeVerdict:
+    # `judge_*` chi so sanh duoc giua baseline/corrupted/repaired khi ca ba dung cung mot judge.
+    # Khi LLM co quota gioi han theo ngay, dat JUDGE_MODE=heuristic de ep ca ba dung chung
+    # heuristic judge thay vi de mot so lan roi vao fallback con mot so lan thi khong.
+    if os.getenv("JUDGE_MODE", "llm").strip().lower() == "heuristic":
+        return _heuristic_verdict(
+            reference,
+            prediction,
+            "Fallback heuristic judge used because JUDGE_MODE=heuristic was requested.",
+        )
+
     prompt = f"""
 Evaluate the model answer against the reference answer.
 
@@ -58,16 +96,26 @@ Return:
 - correct = true only when the answer is materially correct
 - short reasoning
 """.strip()
-    try:
-        llm = build_llm(settings=settings, temperature=0.0).with_structured_output(JudgeVerdict)
-        return llm.invoke(prompt)
-    except Exception:
-        score = 5 if _token_f1(reference, prediction) >= 0.95 else 3 if _token_f1(reference, prediction) >= 0.5 else 1
-        return JudgeVerdict(
-            score=score,
-            correct=score >= 3,
-            reasoning="Fallback heuristic judge used because the LLM evaluator was unavailable.",
-        )
+    # Rate limit la loi tam thoi: phai retry thay vi roi ngay ve heuristic, vi mot vai cau
+    # roi ve heuristic con cac cau khac dung LLM se lam `judge_*` mat tinh so sanh duoc.
+    last_error: Exception | None = None
+    for attempt in range(1, JUDGE_MAX_ATTEMPTS + 1):
+        try:
+            llm = build_llm(settings=settings, temperature=0.0).with_structured_output(JudgeVerdict)
+            return llm.invoke(prompt)
+        except Exception as error:
+            last_error = error
+            if attempt == JUDGE_MAX_ATTEMPTS or not _is_rate_limit(error):
+                break
+            delay = _judge_retry_delay(error, attempt)
+            print(f"[judge] rate limit (attempt {attempt}/{JUDGE_MAX_ATTEMPTS}); retry sau {delay:.0f}s")
+            time.sleep(delay)
+
+    return _heuristic_verdict(
+        reference,
+        prediction,
+        f"Fallback heuristic judge used because the LLM evaluator was unavailable: {last_error}",
+    )
 
 
 def _run_ragas(settings: Settings, answers: list[dict[str, Any]]) -> dict[str, Any]:

@@ -1,0 +1,131 @@
+{
+  "report_name": "repaired",
+  "engine": "great_expectations",
+  "engine_note": "",
+  "generated_at": "2026-08-06T09:29:04.031204+00:00",
+  "rows": 24,
+  "columns": [
+    "paper_id",
+    "title",
+    "summary",
+    "authors_joined",
+    "author_count",
+    "categories_joined",
+    "primary_category",
+    "published",
+    "updated",
+    "age_days",
+    "title_chars",
+    "summary_chars",
+    "abs_url",
+    "pdf_url",
+    "comment",
+    "text_for_embedding"
+  ],
+  "success": true,
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "failed_checks": [],
+  "checks": [
+    {
+      "name": "row_count_minimum",
+      "type": "table_row_count_between",
+      "column": null,
+      "success": true,
+      "observed": {
+        "observed_value": 24
+      }
+    },
+    {
+      "name": "paper_id_not_null",
+      "type": "column_not_null",
+      "column": "paper_id",
+      "success": true,
+      "observed": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      }
+    },
+    {
+      "name": "paper_id_unique",
+      "type": "column_unique",
+      "column": "paper_id",
+      "success": true,
+      "observed": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      }
+    },
+    {
+      "name": "title_not_null",
+      "type": "column_not_null",
+      "column": "title",
+      "success": true,
+      "observed": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      }
+    },
+    {
+      "name": "title_length_minimum",
+      "type": "column_length_between",
+      "column": "title",
+      "success": true,
+      "observed": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      }
+    },
+    {
+      "name": "summary_length_minimum",
+      "type": "column_length_between",
+      "column": "summary",
+      "success": true,
+      "observed": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      }
+    },
+    {
+      "name": "published_is_iso_date",
+      "type": "column_matches_regex",
+      "column": "published",
+      "success": true,
+      "observed": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      }
+    },
+    {
+      "name": "text_for_embedding_length_minimum",
+      "type": "column_length_between",
+      "column": "text_for_embedding",
+      "success": true,
+      "observed": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      }
+    },
+    {
+      "name": "age_days_within_freshness_threshold",
+      "type": "column_values_between",
+      "column": "age_days",
+      "success": true,
+      "observed": {
+        "element_count": 24,
+        "unexpected_count": 0,
+        "unexpected_percent": 0.0
+      }
+    }
+  ]
+}
