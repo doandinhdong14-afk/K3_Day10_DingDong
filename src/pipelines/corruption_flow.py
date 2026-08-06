@@ -12,7 +12,7 @@ from ingestion.cleaning import build_clean_dataframe
 from ingestion.corruption import corrupt_clean_dataframe
 from ingestion.crossref import load_raw_records
 from observability.quality import build_freshness_report, run_data_quality_checks
-from observability.reporting import generate_corruption_report
+from observability.reporting import generate_answer_diff_report, generate_corruption_report
 from retrieval.index import LocalEmbeddingIndex
 
 
@@ -193,6 +193,16 @@ def main() -> None:
     )
     _detail(f"report -> {settings.paths.comparison_report}")
 
+    # Bang chung o muc OUTPUT: cung mot cau hoi, agent tra loi khac nhau tuy chat luong du lieu.
+    answer_diff_path = settings.paths.comparison_report.parent / "answer_diff.md"
+    generate_answer_diff_report(
+        answer_diff_path,
+        read_json(settings.paths.baseline_answers),
+        corrupted_bundle.answers,
+        repaired_bundle.answers,
+    )
+    _detail(f"doi chieu cau tra loi -> {answer_diff_path}")
+
     _step(10, "Tong ket ket qua.")
     print()
     print("=== So sanh metric ===")
@@ -219,6 +229,7 @@ def main() -> None:
         ("repaired quality", _quality_artifact(repaired_quality, settings, "repaired_quality")),
         ("repaired freshness", str(settings.paths.quality_dir / "freshness_report_repaired.json")),
         ("comparison report", str(settings.paths.comparison_report)),
+        ("answer diff report", str(settings.paths.comparison_report.parent / "answer_diff.md")),
     ]
     label_width = max(len(label) for label, _ in artifacts)
 

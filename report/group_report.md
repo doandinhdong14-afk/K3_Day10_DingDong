@@ -2,26 +2,23 @@
 
 ## 1. Thông tin bài nộp
 
-<!-- CAN DIEN: toàn bộ bảng dưới đây là thông tin cá nhân/nhóm, phải do người nộp điền. Không tự suy ra từ artifact. -->
-
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Khóa/Lớp         | [K3 hoặc K4]              |
-| Tên nhóm         | [Tên nhóm]              |
-| Repository         | [Đường dẫn repository] |
-| Ngày hoàn thành | [YYYY-MM-DD]               |
+| Khóa/Lớp         | K3 |
+| Tên nhóm         | DingDong (4 thành viên) |
+| Repository         | https://github.com/doandinhdong14-afk/K3_Day10_DingDong |
+| Ngày hoàn thành | 2026-08-06 |
 
 ### Thành viên và phân công
 
-<!-- CAN DIEN: họ tên, MSSV, vai trò và deliverable sở hữu. Báo cáo này KHÔNG khẳng định thành viên nào đã làm phần nào; các dòng dưới đây giữ nguyên dạng placeholder cho tới khi nhóm tự điền. -->
+Nhóm chia theo cấu hình 4 người khuyến nghị trong [`README.md`](README.md) mục 5, với một điều chỉnh: khối 5 (`reporting.py`) được tách khỏi Observability owner và chuyển sang nhóm trưởng, vì cả ba file report đều phải đọc output của hai flow do nhóm trưởng điều phối. Observability owner vì vậy giữ nguyên khối 4 (`quality.py`).
 
-| STT | Họ và tên | MSSV | Vai trò chính | Module/deliverable sở hữu |
-| --: | --- | --- | --- | --- |
-| 1 | [Họ tên] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
-| 2 | [Họ tên] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
-| 3 | [Họ tên] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
-| 4 | [Nếu có] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
-| 5 | [Nếu có] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
+| STT | Họ và tên | MSSV | Vai trò chính | Module/deliverable sở hữu | Báo cáo cá nhân |
+| --: | --- | --- | --- | --- | --- |
+| 1 | Trần Hoài Nam | 2A202601751 | Source owner | Khối 1 — `src/ingestion/crossref.py`; artifact `data/raw/crossref_response.json`, `crossref_records.json` | [`2A202601751_TranHoaiNam.md`](2A202601751_TranHoaiNam.md) |
+| 2 | Dương Hải Long | 2A202601607 | Data model & evaluation-set owner | Khối 2, 3 — `src/ingestion/cleaning.py`, `src/evaluation/testset.py`; artifact `data/clean/papers_clean.{csv,json}`, `data/eval/test_set.json` | [`2A202601607_DuongHaiLong.md`](2A202601607_DuongHaiLong.md) |
+| 3 | Đặng Quang Minh | 2A202601459 | Observability owner | Khối 4 — `src/observability/quality.py`; artifact `data/quality/*_quality.json`, `freshness_report*.json` | [`2A202601459_DangQuangMinh.md`](2A202601459_DangQuangMinh.md) |
+| 4 | **Đoàn Đình Đông** | **2A202601900** | **Nhóm trưởng** — reporting, orchestration & corruption owner | Khối 5, 6, 7 — `src/observability/reporting.py`, `src/pipelines/phase1.py`, `src/retrieval/index.py`, `src/ingestion/corruption.py`, `src/pipelines/corruption_flow.py`; thêm `app/dashboard.py` (ngoài yêu cầu) và điều phối tích hợp | [`2A202601900_DoanDinhDong.md`](2A202601900_DoanDinhDong.md) |
 
 ## 2. Tóm tắt kết quả
 
@@ -48,17 +45,15 @@ Crossref API
 
 ### Trách nhiệm của từng khối
 
-<!-- CAN DIEN: cột Owner. Báo cáo không gán tên thành viên cho bất kỳ khối nào; nhóm tự điền sau khi thống nhất. -->
-
 | Khối             | Input          | Xử lý chính             | Output/artifact          | Owner          |
 | ----------------- | -------------- | -------------------------- | ------------------------ | -------------- |
-| Ingestion         | Crossref REST API `https://api.crossref.org/works` với `query` + `filter` từ `src/core/config.py` | `src/ingestion/crossref.py`: over-fetch `max_results × 3 = 72` rows, retry/backoff lũy thừa trên 429/500/502/503/504, bóc thẻ XML/HTML trong abstract, loại bài không phải chữ Latin và abstract < 80 ký tự, fallback `categories` sang venue/type/publisher | `data/raw/crossref_response.json`, `data/raw/crossref_records.json` (24 record) | [Thành viên] |
-| Cleaning          | 24 `PaperRecord` từ raw snapshot | `src/ingestion/cleaning.py`: chuẩn hóa khoảng trắng, ép ngưỡng title ≥ 10 và summary ≥ 80 ký tự, giữ `published`/`updated` ở dạng chuỗi, hai lượt dedupe (theo `paper_id` rồi theo title viết thường), tính `age_days`/`author_count`/`title_chars`/`summary_chars`, dựng `text_for_embedding` | `data/clean/papers_clean.csv`, `data/clean/papers_clean.json` (24 dòng × 16 cột) | [Thành viên] |
-| Embedding/index   | Cột `text_for_embedding` của clean frame | `src/retrieval/index.py`: MiniLM-L6-v2, ChromaDB `PersistentClient`, `create_collection(configuration={"hnsw": {"space": "cosine"}})`, id tài liệu = `"{paper_id}::{index}"`, metadata chỉ chứa giá trị nguyên thủy | `data/embeddings/papers_embeddings.json` (manifest), `data/chroma/` (collection `papers-baseline`) | [Thành viên] |
-| Evaluation        | Clean frame + `data/eval/test_set.json` | `src/evaluation/testset.py` sinh 4 câu hỏi × 5 bài báo; `src/evaluation/metrics.py` chấm `retrieval_hit_rate`, `mean_token_f1` và LLM-as-judge (`score` 1–5 + `correct`) | `data/results/baseline_metrics.json`, `data/results/baseline_answers.json`, `data/results/agent_demo_answers.json` | [Thành viên] |
-| Observability     | Clean/corrupted/repaired frame | `src/observability/quality.py`: 12 check trên 5 dimension (completeness, uniqueness, validity, consistency, freshness) + freshness report theo `age_days`; `src/observability/reporting.py` sinh markdown | `data/quality/*.json`, `data/reports/phase1_report.md` | [Thành viên] |
-| Corruption/repair | `data/clean/papers_clean.json` (corrupt) và `data/raw/crossref_records.json` (repair) | `src/ingestion/corruption.py`: 6 loại corruption deterministic (không dùng RNG), offset lệch pha với stride của test set; repair chạy lại `load_raw_records` + `build_clean_dataframe` từ raw snapshot | `data/results/corruption_log.json`, `data/clean/papers_clean_corrupted.*`, `data/clean/papers_clean_repaired.*` | [Thành viên] |
-| Orchestration     | Settings + artifact của pha trước | `script/run_phase1.py` → `src/pipelines/phase1.py` (10 bước); `script/run_corruption_flow.py` → `src/pipelines/corruption_flow.py` (10 bước, chặn chạy nếu thiếu artifact pha 1) | `data/results/{corrupted,repaired}_metrics.json`, `data/reports/corruption_report.md` | [Thành viên] |
+| Ingestion         | Crossref REST API `https://api.crossref.org/works` với `query` + `filter` từ `src/core/config.py` | `src/ingestion/crossref.py`: over-fetch `max_results × 3 = 72` rows, retry/backoff lũy thừa trên 429/500/502/503/504, bóc thẻ XML/HTML trong abstract, loại bài không phải chữ Latin và abstract < 80 ký tự, fallback `categories` sang venue/type/publisher | `data/raw/crossref_response.json`, `data/raw/crossref_records.json` (24 record) | Trần Hoài Nam |
+| Cleaning          | 24 `PaperRecord` từ raw snapshot | `src/ingestion/cleaning.py`: chuẩn hóa khoảng trắng, ép ngưỡng title ≥ 10 và summary ≥ 80 ký tự, giữ `published`/`updated` ở dạng chuỗi, hai lượt dedupe (theo `paper_id` rồi theo title viết thường), tính `age_days`/`author_count`/`title_chars`/`summary_chars`, dựng `text_for_embedding` | `data/clean/papers_clean.csv`, `data/clean/papers_clean.json` (24 dòng × 16 cột) | Dương Hải Long |
+| Embedding/index   | Cột `text_for_embedding` của clean frame | `src/retrieval/index.py`: MiniLM-L6-v2, ChromaDB `PersistentClient`, `create_collection(configuration={"hnsw": {"space": "cosine"}})`, id tài liệu = `"{paper_id}::{index}"`, metadata chỉ chứa giá trị nguyên thủy | `data/embeddings/papers_embeddings.json` (manifest), `data/chroma/` (collection `papers-baseline`) | Đoàn Đình Đông |
+| Evaluation        | Clean frame + `data/eval/test_set.json` | `src/evaluation/testset.py` sinh 4 câu hỏi × 5 bài báo; `src/evaluation/metrics.py` chấm `retrieval_hit_rate`, `mean_token_f1` và LLM-as-judge (`score` 1–5 + `correct`) | `data/results/baseline_metrics.json`, `data/results/baseline_answers.json`, `data/results/agent_demo_answers.json` | Dương Hải Long (test set) + Đoàn Đình Đông (chạy evaluate) |
+| Observability     | Clean/corrupted/repaired frame | `src/observability/quality.py`: 12 check trên 5 dimension (completeness, uniqueness, validity, consistency, freshness) + freshness report theo `age_days`; `src/observability/reporting.py` sinh markdown | `data/quality/*.json`, `data/reports/phase1_report.md` | Đặng Quang Minh (`quality.py`) + Đoàn Đình Đông (`reporting.py`) |
+| Corruption/repair | `data/clean/papers_clean.json` (corrupt) và `data/raw/crossref_records.json` (repair) | `src/ingestion/corruption.py`: 6 loại corruption deterministic (không dùng RNG), offset lệch pha với stride của test set; repair chạy lại `load_raw_records` + `build_clean_dataframe` từ raw snapshot | `data/results/corruption_log.json`, `data/clean/papers_clean_corrupted.*`, `data/clean/papers_clean_repaired.*` | Đoàn Đình Đông |
+| Orchestration     | Settings + artifact của pha trước | `script/run_phase1.py` → `src/pipelines/phase1.py` (10 bước); `script/run_corruption_flow.py` → `src/pipelines/corruption_flow.py` (10 bước, chặn chạy nếu thiếu artifact pha 1) | `data/results/{corrupted,repaired}_metrics.json`, `data/reports/corruption_report.md` | Đoàn Đình Đông |
 
 ## 4. Cách tái hiện kết quả
 
@@ -223,7 +218,8 @@ Toàn bộ đường dẫn dưới đây đã được kiểm tra là tồn tạ
 | Evaluation set           | `data/eval/`                         | Có | `test_set.json`, 20 câu hỏi |
 | Baseline metrics         | `data/results/baseline_metrics.json` | Có | Kèm `baseline_answers.json` (20 câu trả lời đầy đủ) và `agent_demo_answers.json` (2 câu demo qua agent) |
 | Quality/freshness        | `data/quality/`                      | Có | `baseline_quality.json`, `corrupted_quality.json`, `repaired_quality.json`, `freshness_report.json`, `freshness_report_corrupted.json`, `freshness_report_repaired.json`. Thư mục `data/quality/gx/` tồn tại nhưng rỗng — nhóm không dùng Great Expectations, bộ check được viết trực tiếp trong `src/observability/quality.py` |
-| Baseline report          | `data/reports/phase1_report.md`      | Có | Sinh tự động lúc 2026-08-06 04:57:15 UTC; cùng thư mục có `corruption_report.md` (sinh lúc 2026-08-06 04:59:58 UTC) |
+| Baseline report          | `data/reports/phase1_report.md`      | Có | Sinh tự động lúc 2026-08-06 04:57:15 UTC; cùng thư mục có `corruption_report.md` |
+| Đối chiếu câu trả lời  | `data/reports/answer_diff.md`        | Có | Sinh tự động bởi `generate_answer_diff_report()`. Đặt cạnh nhau **câu trả lời thật** của agent ở ba trạng thái cho từng câu hỏi: 7/20 câu đổi output khi dữ liệu hỏng, 7/7 câu quay về đúng sau repair. Đây là bằng chứng ở mức output, độc lập với các chỉ số tổng hợp |
 
 ### Baseline metrics
 
@@ -345,12 +341,12 @@ Hai vấn đề tích hợp khác cũng đã gặp thật và đang được x�
 
 ## 13. Checklist trước khi nộp
 
-- [ ] Thông tin nhóm và repository chính xác. <!-- CAN DIEN: chưa tick vì mục 1 vẫn còn placeholder. -->
-- [ ] Phân công khớp với module, artifact và kết quả thực tế. <!-- CAN DIEN: chưa tick vì cột Owner ở mục 3 vẫn còn placeholder. -->
+- [x] Thông tin nhóm và repository chính xác. <!-- Mục 1 đã điền đủ 4 thành viên, MSSV và đường dẫn repository. -->
+- [x] Phân công khớp với module, artifact và kết quả thực tế. <!-- Cột Owner ở mục 3 đã điền; mỗi owner đối chiếu được với báo cáo cá nhân tương ứng. -->
 - [x] Lệnh tái hiện đã được chạy lại trên phiên bản dùng để nộp. <!-- Đã chạy lại hai lần liên tiếp, kết quả trùng khớp hoàn toàn. -->
 - [x] Baseline, corrupted và repaired dùng cùng evaluation set. <!-- Cả ba lần gọi evaluate_pipeline đều trỏ vào data/eval/test_set.json. -->
 - [x] Bảng metrics khớp với các file trong `data/results/`.
 - [x] Quality/freshness conclusions khớp với `data/quality/`.
 - [x] Các đường dẫn báo cáo và artifact truy cập được. <!-- Đã kiểm tra từng đường dẫn nêu trong mục 7. -->
-- [ ] Mỗi thành viên đã hoàn thành báo cáo vai trò riêng. <!-- CAN DIEN: report/individual_report.md hiện vẫn là template. -->
+- [ ] Mỗi thành viên đã hoàn thành báo cáo vai trò riêng. <!-- 4 file <MSSV>_HoTen.md đã có đủ nội dung; còn chờ từng thành viên tự đọc lại và tick mục 10 trong báo cáo của mình. report/individual_report.md giữ nguyên làm template gốc. -->
 - [x] Không có `.env`, API key, token hoặc secret trong source, report, log hay ảnh. <!-- .env nằm trong .gitignore; báo cáo chỉ nêu TÊN biến môi trường, không nêu giá trị. -->

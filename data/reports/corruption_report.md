@@ -1,6 +1,6 @@
 # Corruption Impact Report
 
-_Generated: 2026-08-06 04:59:58 UTC_
+_Generated: 2026-08-06 05:57:02 UTC_
 
 ## 1. Tom tat
 
@@ -41,7 +41,7 @@ Bao cao so sanh 4 metric chinh giua ba trang thai baseline / corrupted / repaire
 | stale_rows | 4 | 0 |
 | total_rows | 23 | 24 |
 | is_fresh | false | true |
-| generated_at | 2026-08-06T04:58:50.124883+00:00 | 2026-08-06T04:59:58.336298+00:00 |
+| generated_at | 2026-08-06T05:55:56.347919+00:00 | 2026-08-06T05:57:02.102337+00:00 |
 | freshness_threshold_days | 180 | 180 |
 | max_age_days | 1256 | 175 |
 | min_age_days | 34 | 5 |

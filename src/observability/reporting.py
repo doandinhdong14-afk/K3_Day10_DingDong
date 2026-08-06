@@ -739,3 +739,128 @@ def generate_corruption_report(
     )
 
     write_text(report_path, "\n".join(lines).rstrip() + "\n")
+
+
+# ---------------------------------------------------------------------------
+# Bao cao doi chieu CAU TRA LOI THAT giua ba trang thai
+# ---------------------------------------------------------------------------
+_ANSWER_PREVIEW_CHARS = 160
+
+
+def _answers_by_id(answers: Any) -> dict[str, Mapping[str, Any]]:
+    """Danh index cac cau tra loi theo id de doi chieu ba trang thai."""
+    if not isinstance(answers, Sequence):
+        return {}
+    return {str(item.get("id")): item for item in answers if isinstance(item, Mapping) and item.get("id")}
+
+
+def _preview(text: Any) -> str:
+    """Rut gon cau tra loi de dua vao bang, giu nguyen y nghia."""
+    value = normalize_whitespace(str(text or ""))
+    if not value:
+        return "(rong)"
+    return value if len(value) <= _ANSWER_PREVIEW_CHARS else value[:_ANSWER_PREVIEW_CHARS] + "..."
+
+
+def _verdict(item: Mapping[str, Any] | None) -> str:
+    """Tom tat ket qua cham diem cua mot cau."""
+    if not isinstance(item, Mapping):
+        return _NA
+    judge = item.get("judge") if isinstance(item.get("judge"), Mapping) else {}
+    return (
+        f"judge {_fmt_number(judge.get('score'))}/5, "
+        f"F1 {_fmt_number(item.get('token_f1'))}, "
+        f"tim dung bai: {'co' if item.get('retrieval_hit') else 'khong'}"
+    )
+
+
+def generate_answer_diff_report(
+    report_path,
+    baseline_answers: Any,
+    corrupted_answers: Any,
+    repaired_answers: Any,
+) -> None:
+    """Doi chieu cau tra loi that cua agent giua baseline / corrupted / repaired.
+
+    Muc dich: chung minh anh huong cua data quality bang chinh OUTPUT ma nguoi dung nhan duoc,
+    khong chi bang metric. Day la bang chung truc quan nhat cho ket luan cua bai lab.
+    """
+    base = _answers_by_id(baseline_answers)
+    corrupt = _answers_by_id(corrupted_answers)
+    repair = _answers_by_id(repaired_answers)
+
+    changed = [qid for qid in base if _preview(base[qid].get("answer")) != _preview(corrupt.get(qid, {}).get("answer"))]
+    recovered = [qid for qid in changed if _preview(base[qid].get("answer")) == _preview(repair.get(qid, {}).get("answer"))]
+
+    lines: list[str] = [
+        "# Doi chieu cau tra loi cua agent theo trang thai du lieu",
+        "",
+        f"_Generated: {now_utc().strftime('%Y-%m-%d %H:%M:%S')} UTC_",
+        "",
+        "## 1. Tong quan",
+        "",
+        f"- Tong so cau hoi: **{len(base)}** (cung mot evaluation set cho ca ba trang thai).",
+        f"- So cau bi DOI cau tra loi khi du lieu bi corrupt: **{len(changed)}/{len(base)}**.",
+        f"- So cau QUAY VE dung cau tra loi baseline sau khi repair: **{len(recovered)}/{len(changed)}**.",
+        "",
+        "## 2. Cac cau co output khac nhau",
+        "",
+    ]
+
+    if not changed:
+        lines.append("Khong co cau nao doi cau tra loi: corruption chua tac dong den output cua agent.")
+    else:
+        for qid in changed:
+            b, c, r = base.get(qid), corrupt.get(qid), repair.get(qid)
+            lines.extend(
+                [
+                    f"### {qid} - loai `{(b or {}).get('question_type', _NA)}`",
+                    "",
+                    f"**Cau hoi:** {_preview((b or {}).get('question'))}",
+                    "",
+                    _md_table(
+                        ("Trang thai", "Cau tra loi cua agent", "Ket qua cham"),
+                        (
+                            ("Baseline (du lieu sach)", _preview((b or {}).get("answer")), _verdict(b)),
+                            ("Corrupted (du lieu hong)", _preview((c or {}).get("answer")), _verdict(c)),
+                            ("Repaired (da sua)", _preview((r or {}).get("answer")), _verdict(r)),
+                        ),
+                    ),
+                    "",
+                ]
+            )
+
+    unchanged = [qid for qid in base if qid not in changed]
+    lines.extend(
+        [
+            "## 3. Cac cau khong doi output",
+            "",
+            f"{len(unchanged)}/{len(base)} cau giu nguyen cau tra loi vi corruption khong cham vao "
+            "paper tuong ung hoac khong cham vao truong du lieu ma cau hoi do can:",
+            "",
+            ", ".join(f"`{qid}`" for qid in unchanged) or _NA,
+            "",
+            "## 4. Ket luan",
+            "",
+        ]
+    )
+
+    if changed and len(recovered) == len(changed):
+        lines.append(
+            f"Du lieu hong lam **{len(changed)}/{len(base)}** cau tra loi sai lech so voi baseline, "
+            f"va repair tu raw snapshot dua **toan bo {len(recovered)}** cau ve dung cau tra loi ban dau. "
+            "Day la bang chung truc tiep o muc output, doc lap voi cac chi so tong hop."
+        )
+    elif changed:
+        lines.append(
+            f"Du lieu hong lam **{len(changed)}/{len(base)}** cau tra loi sai lech, "
+            f"repair khoi phuc duoc **{len(recovered)}/{len(changed)}** cau. "
+            "Cac cau chua khoi phuc can duoc dieu tra them."
+        )
+    else:
+        lines.append(
+            "Corruption khong lam thay doi output nao cua agent. Can xem lai muc do hoac vi tri corruption "
+            "truoc khi ket luan ve anh huong cua data quality."
+        )
+
+    write_text(report_path, "\n".join(lines).rstrip() + "\n")
