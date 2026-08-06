@@ -21,8 +21,8 @@
 | Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao  | Trạng thái                                 |
 | ------------------ | --------------------- | ---------------- | ----------------- | -------------------------------------------- |
 | [Khởi chạy LLM local]      | []           | [Input]          | [Output/artifact] | [Hoàn thành] |
-| [Tích hợp LLM local vào pipeline]      | [phase1.py]           | [Câu hỏi của người dùng]          | [Intent từ câu truy vấn] | [Một phần] |
-| [Khởi chạy LLM local]      | []           | [Input]          | [Output/artifact] | [Hoàn thành] |
+| [Tích hợp LLM local vào pipeline]      | [testset.py]           | [Câu hỏi của người dùng/tài liệu truy vấn]          | [Intent từ câu truy vấn/câu trả lời] | [Một phần] |
+| Tạo embedding và nạp vào ChromaDB]      | [phase1.py]           | [chunks]          | [vector database] | [Hoàn thành] |
 
 Chỉ nhận ownership cho phần bạn trực tiếp thực hiện. Liên hệ rõ phần việc của bạn với đầu vào, đầu ra và các thành viên phụ thuộc vào phần đó.
 
@@ -30,56 +30,58 @@ Chỉ nhận ownership cho phần bạn trực tiếp thực hiện. Liên hệ 
 
 | Hoạt động                         | Thành viên/module được hỗ trợ | Kết quả                    |
 | ------------------------------------ | ------------------------------------ | ---------------------------- |
-| [Debug/tích hợp/tài liệu] | [Tên hoặc module] | [Kết quả và bằng chứng] |
+| [Tham gia crawl và làm sạch/bẩn dữ liệu] | [cleaning.py/corruption.py] | [data/raw] |
 
 ## 3. Kết quả theo vai trò
 
 | Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao       | Cách xác minh         |
 | --------------------------- | ----------------------------- | ------------------------- | ----------------------- |
-| [Mô tả cụ thể] | [Đường dẫn file] | [Artifact/metrics/report] | [Lệnh/artifact] |
-| [Mô tả cụ thể] | [Đường dẫn file] | [Artifact/metrics/report] | [Lệnh/artifact] |
+| [Chạy LLM local] | [testset.py] | [data/eval/ (evaluation test set)] | [(src/evaluation/testset.py) trong run_phase1.py] |
+
 
 Nêu một output cụ thể mà phần việc của bạn tạo ra hoặc giúp xác minh:
 
-[Mô tả artifact, metric, report hoặc kết quả tích hợp.]
+[data/eval/testset.json]
 
 ## 4. Giải thích phần kỹ thuật đã thực hiện
 
 ### Vấn đề cần giải quyết
 
-[Phần của bạn giải quyết vấn đề gì trong pipeline?]
+[Embedding, truy vấn, xác định intent và sinh câu trả lời]
 
 ### Cách triển khai
 
-[Mô tả thuật toán, quy tắc dữ liệu, orchestration hoặc quyết định chính. Không chỉ chép lại tên hàm.]
+[Sử dụng LLM, prompt được đưa vào dưới dạng json {"user", "content"}{"assistant", "content"}   ]
 
 ### Input, output và contract
 
 | Thành phần                   | Mô tả                                     |
 | ------------------------------ | ------------------------------------------- |
-| Input                          | [Schema, artifact hoặc tham số]           |
-| Output                         | [Schema, artifact hoặc giá trị trả về] |
-| Module phụ thuộc             | [Module/file liên quan]                    |
-| Module sử dụng output        | [Module/file liên quan]                    |
-| Điều kiện lỗi cần xử lý | [Trường hợp thực tế]                   |
+| Input                          | [corpus sạch (cleaned data) và schema câu hỏi/ground truth để sinh evaluation set.]           |
+| Output                         | [Artifact data/eval/testset.json chứa danh sách câu trả lời + ground truth; định dạng JSON với các trường id, answer, ground_truth] |
+| Module phụ thuộc             | [src/ingestion/cleaning.py (để lấy dữ liệu đã chuẩn hóa), src/core/config.py (đường dẫn, cấu hình).]                    |
+| Module sử dụng output        | [src/evaluation/metrics.py (tính chỉ số), src/pipelines/phase1.py và corruption_flow.py (chạy baseline/corruption/repaired).]                    |
+| Điều kiện lỗi cần xử lý | [- Không có dữ liệu sạch để tạo testset → báo lỗi hoặc bỏ qua.
+- Ground truth rỗng hoặc thiếu trường → raise exception.
+- Định dạng JSON không hợp lệ → validate schema trước khi ghi file.]                   |
 
 ### Cách xác minh
 
 ```bash
-[Ghi lệnh thực tế đã chạy]
+[python testset.py]
 ```
 
-- **Kết quả mong đợi:** [Mô tả.]
-- **Kết quả thực tế:** [Mô tả.]
-- **Artifact/log:** [Đường dẫn; không chứa secret.]
+- **Kết quả mong đợi:** [testset.json) được sinh ra từ corpus sạch, chứa danh sách câu trả lời và ground truth đầy đủ, đúng schema (id, answer, ground_truth]
+- **Kết quả thực tế:** [data/eval/testset.json]
+- **Artifact/log:** [data/eval/testset.json, data/logs/testset_generation.log.]
 
 ## 5. Một quyết định kỹ thuật quan trọng
 
-- **Bối cảnh:** [Vấn đề hoặc lựa chọn cần quyết định.]
-- **Các phương án đã cân nhắc:** [Ít nhất hai phương án.]
-- **Phương án đã chọn:** [Lựa chọn.]
-- **Lý do:** [Trade-off về correctness, data quality, reproducibility, cost hoặc độ phức tạp.]
-- **Bằng chứng quyết định phù hợp:** [Metric, artifact hoặc kết quả thử nghiệm.]
+- **Bối cảnh:** [Mô hình chạy tốn nhiều thời gian.]
+- **Các phương án đã cân nhắc:** [Chạy trên GPU/ Dùng mô hình nhỏ hơn]
+- **Phương án đã chọn:** [Chạy trên GPU.]
+- **Lý do:** [GPU có khả năng tính toán song song hàng nghìn phép tính cùng lúc, phù hợp để chạy ANN.]
+- **Bằng chứng quyết định phù hợp:** [Thời gian giảm đi đagns kể]
 
 ## 6. Một lỗi hoặc blocker đã xử lý
 
@@ -107,21 +109,25 @@ Giải thích ngắn gọn bằng lời của bạn:
 5. Repair được xem là thành công dựa trên artifact và metric nào?
 
 **Câu trả lời:**
-
+1. Crossref API trả về raw JSON, lưu trong data/raw/. Embedding + metadata được nạp vào ChromaDB → tạo vector index để phục vụ retrieval.
+2. so sánh câu trả lời agent với ground truth để tính mean_token_f1, judge_accuracy, mean_judge_score.
+3. quality = đúng/đủ, freshness = mới/cập nhật.
+4. Giữ test set cố định giúp chứng minh rõ ràng: baseline tốt → corrupted giảm → repaired khôi phục.
+5. Nếu báo cáo comparison (corruption_report.md) cho thấy repaired ≈ baseline và vượt corrupted rõ rệt thì repair thành công.
 [Viết câu trả lời tại đây.]
 
 ## 8. Phân tích kết quả
 
 ### Metrics chính
 
-| Metric/signal          | Baseline | Corrupted | Repaired | Nhận xét của cá nhân |
-| ---------------------- | -------: | --------: | -------: | ------------------------- |
-| `retrieval_hit_rate` |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| `mean_token_f1`      |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| `judge_accuracy`     |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| `mean_judge_score`   |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| Quality checks         |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
-| Freshness status       |      [ ] |       [ ] |      [ ] | [Nhận xét]              |
+| Metric/signal | Baseline | Corrupted | Repaired | Nhận xét của cá nhân |
+| --- | ---: | ---: | ---: | --- |
+| `retrieval_hit_rate` | 1.0000 | 0.8000 | 1.0000 | thể hiện tương ddooiss rõ ảnh hưởng của dữ liệu lên truy vấn |
+| `mean_token_f1` | 1.0000 | 0.7137 | 1.0000 | Giảm mạnh hơn hit rate vì có câu retrieve đúng nhưng nội dung đã bị làm rỗng hoặc sai ngày |
+| `judge_accuracy` | 1.0000 | 0.7000 | 1.0000 | Cả ba chấm bằng LLM judge thật, 20/20 câu, không có lượt nào rơi về heuristic |
+| `mean_judge_score` | 5.0000 | 3.9000 | 5.0000 | 6 câu bị corruption đều bị chấm 1–3 điểm, xem phân tích bên dưới |
+| Quality checks | PASS 9/9 | FAIL 6/9 | PASS 9/9 | Fail: `paper_id_unique`, `summary_length_minimum`, `age_days_within_freshness_threshold` |
+| Freshness status | FRESH (0/24 stale) | STALE (3/23 stale) | FRESH (0/24 stale) | `latest_published` tụt từ 2026-08-01 xuống 2026-07-03 |
 
 ### Kết luận từ số liệu
 
@@ -142,9 +148,9 @@ Kết quả nào khác với kỳ vọng ban đầu?
 
 ### Ba điều quan trọng nhất
 
-1. [Điều học được về data pipeline.]
-2. [Điều học được về data quality/observability.]
-3. [Điều học được về ảnh hưởng của data đến RAG agent.]
+1. [Điều học được về data pipeline: rất quan trọng]
+2. [Điều học được về data quality/observability: vô cùng quan trọng]
+3. [Điều học được về ảnh hưởng của data đến RAG agent: dữ liệu sạch thì trả lời tốt]
 
 ### Nếu có thêm thời gian
 
@@ -161,5 +167,5 @@ Kết quả nào khác với kỳ vọng ban đầu?
 - [ ] Báo cáo không chứa `.env`, API key, token hoặc secret.
 - [ ] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc báo cáo thành viên khác.
 
-**Họ và tên:** [Họ và tên]
-**Ngày xác nhận:** [YYYY-MM-DD]
+**Họ và tên:** [Dương Hải Long]
+**Ngày xác nhận:** [2026-8-6]
