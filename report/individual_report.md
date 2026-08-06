@@ -5,7 +5,7 @@
 | Thông tin | Nội dung |
 | :--- | :--- |
 | Họ và tên | Trần Hoài Nam |
-| MSSV | 2153225278 |
+| MSSV | 2A202601751 |
 | Khóa/Lớp | K3 |
 | Tên nhóm | K3_Day10_DingDong |
 | Vai trò chính | Core Data Engineer & RAG Pipeline Orchestrator (Xây dựng toàn bộ luồng Ingestion, Cleaning, Evaluation, Observability & Corruption Flow) |
