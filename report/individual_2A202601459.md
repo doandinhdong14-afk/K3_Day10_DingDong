@@ -8,8 +8,8 @@
 | MSSV | 2A202601459 |
 | Khóa/Lớp | K3 |
 | Tên nhóm | DingDong |
-| Vai trò chính | Pipeline owner — toàn bộ 8 module `TODO(student)` và cả hai flow tích hợp |
-| Repository | [Điền đường dẫn repository] |
+| Vai trò chính | Pipeline owner — toàn bộ 8 module `TODO(student)`  |
+| Repository | https://github.com/doandinhdong14-afk/K3_Day10_DingDong/tree/Minh |
 | Ngày hoàn thành | 2026-08-06 |
 
 ## 2. Vai trò và phạm vi công việc
