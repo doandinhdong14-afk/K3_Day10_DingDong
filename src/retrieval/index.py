@@ -12,6 +12,26 @@ from core.utils import read_json, safe_slug, write_json
 from retrieval.embeddings import MiniLMEmbeddings
 
 
+def _relative_to_project(path: Path, settings: Settings) -> str:
+    """Ghi duong dan tuong doi so voi project trong manifest.
+
+    Tranh nhung duong dan tuyet doi (co ca ten user cua may) vao artifact duoc commit,
+    va giup manifest van dung khi project duoc copy sang may khac.
+    """
+    try:
+        return path.resolve().relative_to(settings.paths.project_dir.resolve()).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def _resolve_persist_path(raw_value: object, settings: Settings) -> Path:
+    """Doc nguoc persist_path tu manifest: chap nhan ca duong dan tuyet doi (manifest cu)."""
+    stored = Path(str(raw_value or ""))
+    if not str(raw_value or ""):
+        return settings.paths.chroma_dir
+    return stored if stored.is_absolute() else settings.paths.project_dir / stored
+
+
 @dataclass(frozen=True)
 class SearchResult:
     paper_id: str
@@ -116,7 +136,7 @@ class LocalEmbeddingIndex:
             {
                 "backend": "chroma",
                 "embedding_model": settings.embedding_model,
-                "persist_path": str(persist_path),
+                "persist_path": _relative_to_project(persist_path, settings),
                 "collection_name": collection_name,
                 "documents": documents,
             },
@@ -135,7 +155,7 @@ class LocalEmbeddingIndex:
             settings=settings,
             collection_name=payload["collection_name"],
             documents=payload["documents"],
-            persist_path=Path(payload["persist_path"]),
+            persist_path=_resolve_persist_path(payload.get("persist_path"), settings),
         )
 
     def search(self, query: str, top_k: int | None = None) -> list[SearchResult]:

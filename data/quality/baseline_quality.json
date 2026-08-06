@@ -1,0 +1,109 @@
+{
+  "report_name": "baseline_quality",
+  "generated_at": "2026-08-06T05:17:03.860138+00:00",
+  "total_rows": 24,
+  "total_checks": 12,
+  "passed_checks": 12,
+  "failed_checks": 0,
+  "success": true,
+  "failed_check_names": [],
+  "total_failed_rows": 0,
+  "checks": [
+    {
+      "name": "row_count",
+      "dimension": "completeness",
+      "passed": true,
+      "expectation": "row_count >= 10",
+      "observed": "row_count = 24",
+      "failed_rows": 0
+    },
+    {
+      "name": "paper_id_not_null",
+      "dimension": "completeness",
+      "passed": true,
+      "expectation": "every row has a non-empty 'paper_id'",
+      "observed": "0 / 24 rows have a null/blank 'paper_id'",
+      "failed_rows": 0
+    },
+    {
+      "name": "paper_id_unique",
+      "dimension": "uniqueness",
+      "passed": true,
+      "expectation": "'paper_id' is unique across all rows",
+      "observed": "0 / 24 rows repeat an existing 'paper_id'",
+      "failed_rows": 0
+    },
+    {
+      "name": "title_not_null",
+      "dimension": "completeness",
+      "passed": true,
+      "expectation": "every row has a non-empty 'title'",
+      "observed": "0 / 24 rows have a null/blank 'title'",
+      "failed_rows": 0
+    },
+    {
+      "name": "title_min_length",
+      "dimension": "validity",
+      "passed": true,
+      "expectation": "every row has title_chars >= 10",
+      "observed": "0 / 24 rows have title_chars < 10 or a non-numeric value",
+      "failed_rows": 0
+    },
+    {
+      "name": "summary_not_empty",
+      "dimension": "completeness",
+      "passed": true,
+      "expectation": "every row has a non-empty 'summary'",
+      "observed": "0 / 24 rows have a null/blank 'summary'",
+      "failed_rows": 0
+    },
+    {
+      "name": "summary_min_length",
+      "dimension": "validity",
+      "passed": true,
+      "expectation": "every row has summary_chars >= 80",
+      "observed": "0 / 24 rows have summary_chars < 80 or a non-numeric value",
+      "failed_rows": 0
+    },
+    {
+      "name": "text_for_embedding_present",
+      "dimension": "completeness",
+      "passed": true,
+      "expectation": "every row has a non-empty 'text_for_embedding'",
+      "observed": "0 / 24 rows have a null/blank 'text_for_embedding'",
+      "failed_rows": 0
+    },
+    {
+      "name": "freshness_within_threshold",
+      "dimension": "freshness",
+      "passed": true,
+      "expectation": "no row has age_days > 180",
+      "observed": "0 / 24 rows are older than 180 days",
+      "failed_rows": 0
+    },
+    {
+      "name": "published_format_valid",
+      "dimension": "validity",
+      "passed": true,
+      "expectation": "every 'published' value matches YYYY-MM-DD",
+      "observed": "0 / 24 rows have a malformed 'published' value",
+      "failed_rows": 0
+    },
+    {
+      "name": "title_chars_consistent",
+      "dimension": "consistency",
+      "passed": true,
+      "expectation": "title_chars equals len(title) on every row",
+      "observed": "0 / 24 rows have title_chars out of sync with 'title'",
+      "failed_rows": 0
+    },
+    {
+      "name": "summary_chars_consistent",
+      "dimension": "consistency",
+      "passed": true,
+      "expectation": "summary_chars equals len(summary) on every row",
+      "observed": "0 / 24 rows have summary_chars out of sync with 'summary'",
+      "failed_rows": 0
+    }
+  ]
+}

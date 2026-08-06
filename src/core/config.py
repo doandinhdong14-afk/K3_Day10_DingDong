@@ -49,6 +49,8 @@ class Settings:
     anthropic_api_key: str | None
     openrouter_api_key: str | None
     openrouter_base_url: str
+    groq_api_key: str | None
+    groq_base_url: str
     ollama_base_url: str
     custom_llm_api_key: str | None
     custom_llm_base_url: str | None
@@ -109,13 +111,15 @@ def load_settings(project_dir: Path | None = None) -> Settings:
     )
 
     return Settings(
-        llm_provider=os.getenv("LLM_PROVIDER", "gemini"),
-        model_name=os.getenv("LLM_MODEL", "gemini-2.5-flash"),
+        llm_provider=os.getenv("LLM_PROVIDER", "groq"),
+        model_name=os.getenv("LLM_MODEL", "openai/gpt-oss-20b"),
         google_api_key=os.getenv("GOOGLE_API_KEY"),
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
         openrouter_api_key=os.getenv("OPENROUTER_API_KEY"),
         openrouter_base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
+        groq_api_key=os.getenv("GROQ_API_KEY"),
+        groq_base_url=os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1"),
         ollama_base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         custom_llm_api_key=os.getenv("CUSTOM_LLM_API_KEY"),
         custom_llm_base_url=os.getenv("CUSTOM_LLM_BASE_URL"),
@@ -141,6 +145,9 @@ def normalized_provider(settings: Settings) -> str:
         return "anthropic"
     if provider == "customllm":
         return "custom"
+    # Groq la provider hang nhat, chap nhan them bien the "groqcloud"
+    if provider in {"groq", "groqcloud"}:
+        return "groq"
     return provider
 
 
@@ -168,6 +175,10 @@ def require_llm_credentials(settings: Settings) -> None:
         if settings.custom_llm_base_url:
             return
         raise RuntimeError("CUSTOM_LLM_BASE_URL is required when LLM_PROVIDER=custom.")
+    if provider == "groq":
+        if settings.groq_api_key:
+            return
+        raise RuntimeError("GROQ_API_KEY is required when LLM_PROVIDER=groq.")
     raise RuntimeError(
-        "Unsupported LLM_PROVIDER. Expected one of: openai, gemini, anthropic, openrouter, ollama, custom."
+        "Unsupported LLM_PROVIDER. Expected one of: openai, gemini, anthropic, openrouter, groq, ollama, custom."
     )

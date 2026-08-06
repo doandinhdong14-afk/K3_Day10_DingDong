@@ -198,6 +198,28 @@ Nếu dùng pip:
 python script/run_corruption_flow.py
 ```
 
+### Pha 3 - Xem kết quả bằng UI và CLI
+
+Hai công cụ dưới đây chỉ **đọc** artifact trong `data/` và nạp lại ChromaDB collection đã build sẵn. Chúng không chạy lại pipeline, nên mọi số liệu hiển thị luôn khớp với artifact trên đĩa.
+
+**Dashboard Streamlit** - 7 tab: tổng quan, khám phá dữ liệu, data quality, evaluation, so sánh baseline/corrupted/repaired, RAG chat và toàn bộ báo cáo.
+
+```bash
+python -m pip install -e ".[ui]"
+streamlit run app/dashboard.py
+```
+
+**CLI chat** - hỏi đáp trực tiếp với corpus trên terminal.
+
+```bash
+python script/chat.py                        # chat với corpus baseline
+python script/chat.py --dataset corrupted    # chat với corpus đã bị làm hỏng
+python script/chat.py --trace                # hiện tool call của agent
+python script/chat.py --ask "Who authored ...?"   # hỏi một câu rồi thoát
+```
+
+Trong phiên chat: `/help`, `/trace`, `/reset`, `/dataset <tên>`, `/quit`. Hai lệnh `/search <query>` và `/qa <câu hỏi>` chạy retrieval và rule-based QA **không gọi LLM**, dùng để debug mà không tốn API call.
+
 ## 6. Kiểm tra kết quả
 
 Sau baseline, tối thiểu cần kiểm tra:

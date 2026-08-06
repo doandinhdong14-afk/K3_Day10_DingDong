@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-08-06T04:58:50.124883+00:00",
+  "latest_published": "2026-07-03",
+  "oldest_published": "2023-02-26",
+  "stale_rows": 4,
+  "total_rows": 23,
+  "is_fresh": false,
+  "freshness_threshold_days": 180,
+  "max_age_days": 1256,
+  "min_age_days": 34,
+  "mean_age_days": 278.7,
+  "stale_ratio": 0.1739,
+  "age_days_available": true,
+  "stale_paper_ids": [
+    "10.21079/11681/50309",
+    "10.52060/juptik.v4i1.4318",
+    "10.1093/sleep/zsag091.0346",
+    "10.35314/3y9hy151"
+  ]
+}

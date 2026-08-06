@@ -1,0 +1,217 @@
+{
+  "generated_at": "2026-08-06T04:58:19.195075+00:00",
+  "source_rows": 24,
+  "result_rows": 23,
+  "parameters": {
+    "min_source_rows": 8,
+    "drop_latest": 3,
+    "blank_count": 3,
+    "noise_count": 3,
+    "noise_token": "LOREM IPSUM DOLOR ###### CORRUPTED PAYLOAD @@@@@@. ",
+    "noise_repeat": 3,
+    "truncate_count": 3,
+    "truncate_chars": 8,
+    "stale_count": 4,
+    "stale_years": 3,
+    "days_per_year": 365,
+    "duplicate_count": 2,
+    "selection_stride": 5,
+    "offsets": {
+      "blank_summary": 1,
+      "inject_noise": 5,
+      "truncate_title": 9,
+      "stale_dates": 13,
+      "duplicate_rows": 0
+    },
+    "max_logged_ids": 25,
+    "deterministic": true
+  },
+  "steps": [
+    {
+      "name": "drop_latest_records",
+      "description": "Xoa 3 dong moi nhat o dau frame de gia lap incremental load that bai.",
+      "affected_rows": 3,
+      "affected_paper_ids": [
+        "10.2118/234689-pa",
+        "10.1007/s10278-026-02086-9",
+        "10.21203/rs.3.rs-10178277/v1"
+      ],
+      "details": {
+        "dropped_positions": [
+          0,
+          1,
+          2
+        ],
+        "rows_before": 24,
+        "rows_after": 21,
+        "note": "mat cac paper moi nhat nen freshness va retrieval deu giam"
+      }
+    },
+    {
+      "name": "blank_summary",
+      "description": "Dat summary = '' va summary_chars = 0 tren 3 dong.",
+      "affected_rows": 3,
+      "affected_paper_ids": [
+        "10.3390/buildings16132637",
+        "10.21203/rs.3.rs-9882260/v1",
+        "10.32473/flairs.39.1.141782"
+      ],
+      "details": {
+        "positions": [
+          1,
+          6,
+          11
+        ],
+        "offset": 1,
+        "stride": 5,
+        "note": "summary rong lam cau hoi dang summary mat hoan toan ground truth"
+      }
+    },
+    {
+      "name": "inject_noise",
+      "description": "Noi 153 ky tu rac vao summary cua 3 dong.",
+      "affected_rows": 3,
+      "affected_paper_ids": [
+        "10.21203/rs.3.rs-10012178/v1",
+        "10.21203/rs.3.rs-9770645/v1",
+        "10.70121/001c.158711"
+      ],
+      "details": {
+        "positions": [
+          5,
+          10,
+          15
+        ],
+        "offset": 5,
+        "stride": 5,
+        "noise_token": "LOREM IPSUM DOLOR ###### CORRUPTED PAYLOAD @@@@@@. ",
+        "noise_repeat": 3,
+        "noise_chars": 153
+      }
+    },
+    {
+      "name": "truncate_title",
+      "description": "Cat title con 8 ky tu dau tren 3 dong.",
+      "affected_rows": 3,
+      "affected_paper_ids": [
+        "10.22214/ijraset.2026.82233",
+        "10.20944/preprints202604.0339.v1",
+        "10.1097/hc9.0000000000000895"
+      ],
+      "details": {
+        "positions": [
+          9,
+          14,
+          19
+        ],
+        "offset": 9,
+        "stride": 5,
+        "keep_chars": 8,
+        "new_titles": [
+          "Hybrid G",
+          "Retrieva",
+          "Developm"
+        ],
+        "note": "title cut lam cau hoi trich dan tieu de khong con khop document"
+      }
+    },
+    {
+      "name": "stale_dates",
+      "description": "Lui published/updated 3 nam va cong 1095 vao age_days tren 4 dong.",
+      "affected_rows": 4,
+      "affected_paper_ids": [
+        "10.21079/11681/50309",
+        "10.52060/juptik.v4i1.4318",
+        "10.1093/sleep/zsag091.0346",
+        "10.35314/3y9hy151"
+      ],
+      "details": {
+        "positions": [
+          2,
+          7,
+          13,
+          18
+        ],
+        "offset": 13,
+        "stride": 5,
+        "years_back": 3,
+        "extra_age_days": 1095,
+        "shifts": [
+          {
+            "from": "2026-07-01",
+            "to": "2023-07-01"
+          },
+          {
+            "from": "2026-06-01",
+            "to": "2023-06-01"
+          },
+          {
+            "from": "2026-05-01",
+            "to": "2023-05-01"
+          },
+          {
+            "from": "2026-02-26",
+            "to": "2023-02-26"
+          }
+        ]
+      }
+    },
+    {
+      "name": "duplicate_rows",
+      "description": "Them 2 dong trung lap vao cuoi frame.",
+      "affected_rows": 2,
+      "affected_paper_ids": [
+        "10.2196/preprints.106157",
+        "10.21203/rs.3.rs-10012178/v1"
+      ],
+      "details": {
+        "source_positions": [
+          0,
+          5
+        ],
+        "appended_positions": [
+          21,
+          22
+        ],
+        "rows_before": 21,
+        "rows_after": 23,
+        "note": "paper_id bi lap lam uniqueness check that bai"
+      }
+    },
+    {
+      "name": "rebuild_embedding_text",
+      "description": "Dung lai text_for_embedding cho toan bo dong sau khi da lam hong du lieu.",
+      "affected_rows": 23,
+      "affected_paper_ids": [
+        "10.2196/preprints.106157",
+        "10.3390/buildings16132637",
+        "10.21079/11681/50309",
+        "10.1111/exsy.70341",
+        "10.63646/kpqm1958",
+        "10.21203/rs.3.rs-10012178/v1",
+        "10.21203/rs.3.rs-9882260/v1",
+        "10.52060/juptik.v4i1.4318",
+        "10.54254/2753-8818/2026.dl34055",
+        "10.22214/ijraset.2026.82233",
+        "10.21203/rs.3.rs-9770645/v1",
+        "10.32473/flairs.39.1.141782",
+        "10.55041/isjem07213",
+        "10.1093/sleep/zsag091.0346",
+        "10.20944/preprints202604.0339.v1",
+        "10.70121/001c.158711",
+        "10.36227/techrxiv.177272838.89432844/v1",
+        "10.3390/app16052244",
+        "10.35314/3y9hy151",
+        "10.1097/hc9.0000000000000895",
+        "10.20944/preprints202602.0996.v1",
+        "10.2196/preprints.106157",
+        "10.21203/rs.3.rs-10012178/v1"
+      ],
+      "details": {
+        "rows": 23,
+        "note": "index corrupted se embed dung phan text da hong"
+      }
+    }
+  ],
+  "total_affected_rows": 18
+}

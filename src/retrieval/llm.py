@@ -37,6 +37,14 @@ def build_llm(settings: Settings, temperature: float = 0.0):
             base_url=settings.openrouter_base_url,
             temperature=temperature,
         )
+    if provider == "groq":
+        # Groq expose REST API tuong thich OpenAI nen dung lai ChatOpenAI voi base_url rieng
+        return ChatOpenAI(
+            model=settings.model_name,
+            api_key=settings.groq_api_key,
+            base_url=settings.groq_base_url,
+            temperature=temperature,
+        )
     if provider == "ollama":
         return ChatOllama(
             model=settings.model_name,

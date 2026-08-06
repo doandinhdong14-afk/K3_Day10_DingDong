@@ -1,0 +1,32 @@
+[
+  {
+    "id": "q001",
+    "question_type": "authors",
+    "question": "Who authored the paper 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation'?",
+    "ground_truth": "Qianwen Cao, Chiyu Zhang, Junxiong Ning, Gongru Li",
+    "agent_answer": [
+      {
+        "type": "text",
+        "text": "The paper 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation' was authored by **Qianwen Cao, Chiyu Zhang, Junxiong Ning, and Gongru Li**.",
+        "extras": {
+          "signature": "EjQKMgERTTIPW0ISbPddg2RLmEF5sD4xEPjqfIM1UeeQl98ZRl3JV4OK/qfDtcO+xXJNuTXK"
+        }
+      }
+    ]
+  },
+  {
+    "id": "q002",
+    "question_type": "date",
+    "question": "When was the paper 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation' published?",
+    "ground_truth": "2026-08-01",
+    "agent_answer": [
+      {
+        "type": "text",
+        "text": "The paper \"SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation\" was published on August 1, 2026.",
+        "extras": {
+          "signature": "EjQKMgERTTIPWg+WF2rXAuj2PyOyuQSDmXtP2+Sc6YZ2PIKCuUjimG+Oq+7zlqIkPBJpSaE1"
+        }
+      }
+    ]
+  }
+]
