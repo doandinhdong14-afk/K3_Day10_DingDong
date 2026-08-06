@@ -1,0 +1,44 @@
+{
+  "log": [
+    {
+      "action": "drop_latest_records",
+      "count": 2,
+      "dropped_paper_ids": [
+        "10.2118/234689-pa",
+        "10.1007/s10278-026-02086-9"
+      ]
+    },
+    {
+      "action": "blank_summary",
+      "affected_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "action": "inject_noise",
+      "affected_indices": [
+        2,
+        3
+      ]
+    },
+    {
+      "action": "truncate_title",
+      "affected_indices": [
+        4
+      ]
+    },
+    {
+      "action": "make_stale_dates",
+      "affected_indices": [
+        5,
+        6
+      ]
+    },
+    {
+      "action": "add_duplicate_rows",
+      "count": 2
+    }
+  ],
+  "total_corrupted_rows": 24
+}

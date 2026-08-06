@@ -1,0 +1,13 @@
+{
+  "report_name": "repaired_quality",
+  "success": true,
+  "checks": {
+    "total_rows": 24,
+    "paper_id_nulls": 0,
+    "duplicate_paper_ids": 0,
+    "title_nulls": 0,
+    "summary_nulls": 0,
+    "short_summaries": 0,
+    "stale_rows": 0
+  }
+}
